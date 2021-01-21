@@ -48,7 +48,7 @@ class Posts {
 };
 class Post {
   constructor(param) {
-    this.id = param.id;
+    this.id = param.id ? param.id : this.generateID();
     this.userName = param.userName;
     this.nickName = param.nickName;
     this.postData = param.postData;
@@ -66,10 +66,15 @@ class Post {
       this.likes--;
     }
   };
+
+  generateID() {
+    return (new Date)
+  }
 };
 
 const twitter = new Twitter({
-  listElem: '.tweet-list'
+  listElem: '.tweet -list'
 });
 
-console.log(twitter)
+console.log('twitter: ', twitter)
+console.log(new Date)
