@@ -20,12 +20,14 @@ class Twitter {
     modalElems, 
     tweetElems, 
     classDeleteTweet, 
-    classLikeTweet }) {
+    classLikeTweet, 
+    sortElem }) {
     const fetchData = new FetchData();
     this.user = user;
     this.tweets = new Posts();
     this.elements = {
       listElem: document.querySelector(listElem),
+      sortElem: document.querySelector(sortElem),
       modal: modalElems, 
       tweetElems,
     }
@@ -33,6 +35,7 @@ class Twitter {
       classDeleteTweet,
       classLikeTweet
     };
+    this.sortDate = true;
     
     fetchData.getPost()
         .then(data => {
@@ -44,12 +47,13 @@ class Twitter {
         this.elements.tweetElems.forEach(this.addTweet, this);
 
         this.elements.listElem.addEventListener('click', this.handlerTweet);
+        this.elements.sortElem.addEventListener('click', this.changeSort);
   }
 
   renderPosts(tweets) {
-    this.elements.listElem.textContent = '';
-    
-    tweets.forEach(({ id, 
+    const sortPost = tweets.sort(this.sortFields());
+    this.elements.listElem.textContent = '';    
+    sortPost.forEach(({ id, 
       userName, 
       nickname, 
       getDate, 
@@ -176,6 +180,23 @@ class Twitter {
       this.showAllPosts();
     }
   }
+
+  changeSort = () => {
+    this.sortDate = !this.sortDate;
+    this.showAllPosts();
+  }
+
+  sortFields() {
+    if (this.sortDate) {
+      return (a, b) => {
+        const dateA = new Date(a.postDate);
+        const dateB = new Date(b.postDate);
+        return dateB - dateA;
+      }
+    } else {
+      return (a, b) => b.likes - a.likes; 
+    }
+  } 
 }
 
 class Posts {
@@ -194,7 +215,6 @@ class Posts {
   likePost(id) {
     this.posts.forEach(item => {
       if (item.id === id) {
-        console.log(id)
         item.changeLike();
       }
     })
@@ -278,4 +298,5 @@ const twitter = new Twitter({
     like: 'tweet__like',
     active: 'tweet__like_active'
   },
+  sortElem: '.header__link_sort',
 });
