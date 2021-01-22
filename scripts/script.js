@@ -200,6 +200,14 @@ class Post {
 
     return this.postDate.toLocaleString('ru-RU', options);
   };
+
+  correctDate(date) {
+    if(isNaN(Date.parse(date))) {
+      console.log('Date is incorrect')
+      date = date.replace(/\./g, '/')
+    }
+    return newDate(date);
+  }
 };
 
 const twitter = new Twitter({
