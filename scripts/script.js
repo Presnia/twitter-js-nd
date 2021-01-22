@@ -14,14 +14,15 @@ class FetchData {
 
 
 class Twitter {
-  constructor({ user, listElem, modalElems, tweetElems }) {
+  constructor({ user, listElem, modalElems, tweetElems, mainElems }) {
     const fetchData = new FetchData();
     this.user = user;
     this.tweets = new Posts();
     this.elements = {
       listElem: document.querySelector(listElem),
       modal: modalElems, 
-      tweetElems 
+      tweetElems,
+      main: mainElems,
     }
     
     fetchData.getPost()
@@ -32,6 +33,7 @@ class Twitter {
 
         this.elements.modal.forEach(this.handlerModal, this);
         this.elements.tweetElems.forEach(this.addTweet, this);
+        this.elements.main.forEach(this.addTweet, this);
   }
 
   renderPosts(tweets) {
@@ -131,6 +133,7 @@ class Twitter {
       })
       this.showAllPosts();
       this.handlerModal.closeModal();
+      textElem.innerHTML = tempString;
     })
 
     textElem.addEventListener('click', () => {
@@ -220,6 +223,13 @@ const twitter = new Twitter({
       text: '.modal .tweet-form__text',
       img: '.modal .tweet-img__btn',
       submit: '.modal .tweet-form__btn',
+    }
+  ],
+  mainElems: [
+    {
+      text: '.wrapper .tweet-form__text',
+      img: '.wrapper .tweet-img__btn',
+      submit: '.wrapper .tweet-form__btn',
     }
   ]
 
