@@ -49,7 +49,14 @@ class Twitter {
   renderPosts(tweets) {
     this.elements.listElem.textContent = '';
     
-    tweets.forEach(({ id, userName, nickname, getDate, text, img, likes }) => {
+    tweets.forEach(({ id, 
+      userName, 
+      nickname, 
+      getDate, 
+      text, 
+      img, 
+      likes, 
+      liked }) => {
       this.elements.listElem.insertAdjacentHTML('beforeend', `
           <li>
 							<article class="tweet">
@@ -74,7 +81,7 @@ class Twitter {
 									</div>
 								</div>
 								<footer>
-									<button class="tweet__like">
+									<button class="tweet__like ${liked ? this.class.classLikeTweet.active : ''}" data-id="${id}">
 										${likes}
 									</button>
 								</footer>
@@ -165,7 +172,8 @@ class Twitter {
     }
     
     if (target.classList.contains(this.class.classLikeTweet.like)) {
-      console.log('Like')
+      this.tweets.likePost(target.dataset.id);
+      this.showAllPosts();
     }
   }
 }
@@ -184,7 +192,12 @@ class Posts {
   };
 
   likePost(id) {
-    
+    this.posts.forEach(item => {
+      if (item.id === id) {
+        console.log(id)
+        item.changeLike();
+      }
+    })
   };
 };
 class Post {
