@@ -108,6 +108,10 @@ class Twitter {
     if (overlayElem) {
       overlayElem.addEventListener('click', closeModal.bind(null, overlayElem));
     }
+
+    this.handlerModal.closeModal = () => {
+      modalElem.style.display = 'none';
+    };
   }
 
   addTweet({ text, img, submit }) {
@@ -116,6 +120,7 @@ class Twitter {
     const submitElem = document.querySelector(submit);
 
     let imgUrl = '';
+    let tempString = textElem.innerHTML; 
 
     submitElem.addEventListener('click', () => {
       this.tweets.addPost({
@@ -125,6 +130,17 @@ class Twitter {
         img: imgUrl,
       })
       this.showAllPosts();
+      this.handlerModal.closeModal();
+    })
+
+    textElem.addEventListener('click', () => {
+      if (textElem.innerHTML === tempString) {
+        textElem.textContent = '';
+      }
+    })
+
+    imgElem.addEventListener('click', () => {
+      imgUrl = prompt('Please, enter image address')
     })
   }
 }
