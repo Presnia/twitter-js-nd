@@ -14,7 +14,13 @@ class FetchData {
 
 
 class Twitter {
-  constructor({ user, listElem, modalElems, tweetElems }) {
+  constructor({ 
+    user, 
+    listElem, 
+    modalElems, 
+    tweetElems, 
+    classDeleteTweet, 
+    classLikeTweet }) {
     const fetchData = new FetchData();
     this.user = user;
     this.tweets = new Posts();
@@ -23,6 +29,10 @@ class Twitter {
       modal: modalElems, 
       tweetElems,
     }
+    this.class = {
+      classDeleteTweet,
+      classLikeTweet
+    };
     
     fetchData.getPost()
         .then(data => {
@@ -32,6 +42,8 @@ class Twitter {
 
         this.elements.modal.forEach(this.handlerModal, this);
         this.elements.tweetElems.forEach(this.addTweet, this);
+
+        this.elements.listElem.addEventListener('click', this.handlerTweet);
   }
 
   renderPosts(tweets) {
@@ -144,6 +156,18 @@ class Twitter {
       imgUrl = prompt('Please, enter image address')
     })
   }
+
+  handlerTweet = event => {
+    const target = event.target;
+    if (target.classList.contains(this.class.classDeleteTweet)) {
+      this.tweets.deletePost(target.dataset.id);
+      this.showAllPosts();
+    }
+    
+    if (target.classList.contains(this.class.classLikeTweet.like)) {
+      console.log('Like')
+    }
+  }
 }
 
 class Posts {
@@ -156,7 +180,7 @@ class Posts {
   }; 
 
   deletePost(id) {
-
+    this.posts = this.posts.filter(item => item.id !== id);
   };
 
   likePost(id) {
@@ -236,4 +260,9 @@ const twitter = new Twitter({
       submit: '.tweet-form__btn',
     }
   ],
+  classDeleteTweet: 'tweet__delete-button',
+  classLikeTweet: {
+    like: 'tweet__like',
+    active: 'tweet__like_active'
+  },
 });
