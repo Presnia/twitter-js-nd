@@ -101,8 +101,12 @@ class Twitter {
     }
 
     buttonElem.addEventListener('click', openModal);
-    closeElem.addEventListener('click', closeModal.bind(null, closeElem)); 
-    overlayElem.addEventListener('click', closeModal.bind(null, overlayElem)); 
+    if (closeElem) {
+      closeElem.addEventListener('click', closeModal.bind(null, closeElem));
+    }
+    if (overlayElem) {
+      overlayElem.addEventListener('click', closeModal.bind(null, overlayElem));
+    }
   }
 }
 
