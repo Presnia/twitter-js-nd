@@ -168,7 +168,7 @@ class Post {
     this.id = id || this.generateID();
     this.userName = userName;
     this.nickname = nickname;
-    this.postDate = postDate ? new Date(postDate) : new Date();
+    this.postDate = postDate ? this.correctDate(postDate) : new Date();
     this.text = text;
     this.img = img;
     this.likes = likes;
@@ -204,9 +204,9 @@ class Post {
   correctDate(date) {
     if(isNaN(Date.parse(date))) {
       console.log('Date is incorrect')
-      date = date.replace(/\./g, '/')
+      date = date.replaceAll('.', '/')
     }
-    return newDate(date);
+    return new Date(date);
   }
 };
 
